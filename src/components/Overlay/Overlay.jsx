@@ -1,26 +1,23 @@
-import React from 'react';
 import s from './Overlay.module.css';
-import * as PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
-class Overlay extends React.Component {
-  handleOverlayClick = e => {
+const Overlay = ({ onOverlayClick, component }) => {
+  const handleOverlayClick = e => {
     if (e.target === e.currentTarget) {
-      this.props.onOverlayClick();
+      onOverlayClick();
     }
   };
 
-  render() {
-    return (
-      <div onClick={this.handleOverlayClick} className={s.overlay}>
-        {this.props.component}
-      </div>
-    );
-  }
-}
+  return (
+    <div onClick={handleOverlayClick} className={s.overlay}>
+      {component}
+    </div>
+  );
+};
 
 Overlay.propTypes = {
-  onOverlayClick: PropTypes.any,
-  component: PropTypes.any,
+  onOverlayClick: PropTypes.func.isRequired,
+  component: PropTypes.object.isRequired,
 };
 
 export default Overlay;
