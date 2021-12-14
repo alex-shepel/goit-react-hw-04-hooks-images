@@ -37,6 +37,7 @@ const App = () => {
       setImages(images);
       setView(View.NORMAL);
     };
+
     handleLoading(promiseCallback, thenCallback);
   };
 
