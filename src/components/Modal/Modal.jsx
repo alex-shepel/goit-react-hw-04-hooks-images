@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import Overlay from 'components/Overlay';
@@ -7,37 +7,30 @@ import ModalLoader from 'components/ModalLoader';
 
 const modalRef = document.querySelector('#modal');
 
-class Modal extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.onEscPress);
-  }
+const Modal = ({ url, onClose }) => {
+  useEffect(() => {
+    window.addEventListener('keydown', onEscPress);
+    return () => window.removeEventListener('keydown', onEscPress);
+  });
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.onEscPress);
-  }
-
-  onEscPress = e => {
+  const onEscPress = e => {
     if (e.code === 'Escape') {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  render() {
-    const { onClose, url } = this.props;
+  const modal = (
+    <div className={s.modal}>
+      <ModalLoader />
+      <img src={url} alt="" />
+    </div>
+  );
 
-    const modal = (
-      <div className={s.modal}>
-        <ModalLoader />
-        <img src={url} alt="" />
-      </div>
-    );
-
-    return createPortal(
-      <Overlay onOverlayClick={onClose} component={modal} />,
-      modalRef,
-    );
-  }
-}
+  return createPortal(
+    <Overlay onOverlayClick={onClose} component={modal} />,
+    modalRef,
+  );
+};
 
 Modal.propTypes = {
   url: PropTypes.string.isRequired,
