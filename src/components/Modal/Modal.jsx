@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import Overlay from 'components/Overlay';
 import s from './Modal.module.css';
 import ModalLoader from 'components/ModalLoader';
 
-const modalRef = document.querySelector('#modal');
-
 const Modal = ({ url, onClose }) => {
+  const modalRef = useRef(document.querySelector('#modal'));
+
   useEffect(() => {
     window.addEventListener('keydown', onEscPress);
     return () => window.removeEventListener('keydown', onEscPress);
@@ -28,7 +28,7 @@ const Modal = ({ url, onClose }) => {
 
   return createPortal(
     <Overlay onOverlayClick={onClose} component={modal} />,
-    modalRef,
+    modalRef.current,
   );
 };
 
